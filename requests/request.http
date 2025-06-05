@@ -4,7 +4,7 @@ post http://localhost:3000/login
 Content-Type: application/json
 
 {
-  "email": "admin@admin.com",
+  "adresse_email": "admin@admin.com",
   "password": "admin"
 }
 ###
@@ -13,11 +13,11 @@ post http://localhost:3000/register
 Content-Type: application/json
 
 {
-  "email": "admin@admin.com",
+    "adresse_email": "admin@admin.com",
     "password": "admin",
     "password_confirmation": "admin",
-    "nom" : "admin",
-    "prenom" : "admin"
+    "noms" : "admin",
+    "prenoms" : "admin"
 }
 ###
 // demande d'acces
@@ -25,8 +25,7 @@ post http://localhost:3000/ask
 Content-Type: application/json
 
 {
-  "email": "admin@admin.com",
-  "nom_complet": "admin admin",
+  "adresse_email": "admin@admin.com",
   "fonction": "admin",
   "direction": "direction A",
   "justificatif": "justification de la demande"

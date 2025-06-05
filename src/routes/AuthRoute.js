@@ -20,7 +20,7 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             properties:
- *               email:
+ *               adresse_email:
  *                 type: string
  *                 example: "YdL0v@example.com"
  *               password:
@@ -47,7 +47,7 @@ const router = express.Router();
  *          schema:
  *            type: object
  *            properties:
- *              email:
+ *              adresse_email:
  *                type: string
  *                example: "YdL0v@example.com"
  *              password:
@@ -56,10 +56,10 @@ const router = express.Router();
  *              password_confirmation:
  *                type: string
  *                example: "password123"
- *              nom:
+ *              noms:
  *                type: string
  *                example: "John"
- *              prenom:
+ *              prenoms:
  *                type: string
  *                example: "Doe"
  *    responses:
@@ -82,12 +82,9 @@ const router = express.Router();
  *          schema:
  *            type: object
  *            properties:
- *              email:
+ *              adresse_email:
  *                type: string
- *                example: "YdL0v@example.com"
- *              nom_complet:
- *                type: string
- *                example: "John Doe"    
+ *                example: "YdL0v@example.com"   
  *              fonction:
  *                type: string
  *                example: "Manager"    
