@@ -1,6 +1,6 @@
-import {loginController} from '../controllers/AuthController.js';
-import {registerController} from '../controllers/AuthController.js';
-import {askController} from '../controllers/AuthController.js';
+import {loginController} from '../controllers/authController.js';
+import {registerController} from '../controllers/authController.js';
+import {askController} from '../controllers/authController.js';
 import express from 'express';
 
 const router = express.Router();

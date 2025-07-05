@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 
-const Note = sequelize.define('Note', {
-  id_note: {
+const Document = sequelize.define('Document', {
+  id_document: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
@@ -10,12 +10,12 @@ const Note = sequelize.define('Note', {
   },
   description: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: true
   }
 }, {
-  tableName: 'Notes',
+  tableName: 'Documents',
   timestamps: true,
   underscored: true
 });
 
-export default Note;
+export default Document;

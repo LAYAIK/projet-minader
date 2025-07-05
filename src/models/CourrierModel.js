@@ -1,8 +1,30 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
-import Utilisateur from './UtilisateurModel.js'; // Pour l'expéditeur
-import TypeCourrier from './TypeCourrierModel.js'; // Pour le type de courrier
-import Structure from './StructureModel.js'; // Pour la structure de transit
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Courier:
+ *       type: object
+ *       properties:
+ *         id_courrier:
+ *           type: string
+ *           format: uuid
+ *         objet:
+ *           type: string
+ *         date_depot:
+ *           type: string
+ *           format: date-time
+ *         numero_courrier:
+ *           type: string
+ *         nature:
+ *           type: string
+ *       required:
+ *         - objet
+ *         - date_depot
+ *         - numero_courrier
+ */
 
 const Courrier = sequelize.define('Courrier', {
   id_courrier: {
@@ -24,40 +46,18 @@ const Courrier = sequelize.define('Courrier', {
     allowNull: false,
     unique: true
   },
-  type: { // Type de courrier (ex: 'Entrant', 'Sortant', 'Interne')
+  id_receveurs: { // Liste des ID des receveurs du courrier (ex: ['123e4567-e89b-12d3-a456-426614174000'])
+    type: DataTypes.ARRAY(DataTypes.UUID),
+    allowNull: true
+  },
+  status: { // Statut du courrier (ex: 'En attente', 'Traité', 'Archivé')
     type: DataTypes.STRING(50),
-    allowNull: true 
+    allowNull: false,
+    defaultValue: 'En attente'
   },
   nature: { // Nature du courrier (ex: 'Demande', 'Rapport', 'Facture')
     type: DataTypes.STRING(100),
     allowNull: true
-  },
-  // Clé étrangère vers Utilisateur (relation "Envoyer")
-  id_expediteur: { // Renommé pour clarté
-    type: DataTypes.UUID,
-    references: {
-      model: Utilisateur,
-      key: 'id_utilisateur'
-    },
-    allowNull: true 
-  },
-  // Clé étrangère vers Type_courrier 
-  id_type_courrier: {
-    type: DataTypes.UUID,
-    references: {
-      model: TypeCourrier,
-      key: 'id_type_courrier'
-    },
-    allowNull: false 
-  },
-  // Clé étrangère vers Structure (relation "Transiter")
-  id_structure_actuelle: { // La structure où le courrier se trouve actuellement
-    type: DataTypes.UUID,
-    references: {
-      model: Structure,
-      key: 'id_structure'
-    },
-    allowNull: true // Un courrier peut ne pas être dans une structure spécifique au début
   }
 }, {
   tableName: 'Courriers',

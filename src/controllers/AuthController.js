@@ -1,16 +1,9 @@
 import Utilisateur from '../models/UtilisateurModel.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { DATEONLY, Op } from 'sequelize';
-// import dotenv from 'dotenv';
+import generateToken from './generateToken.js';
 
 
-// dotenv.config(); // Charge les variables d'environnement depuis le fichier .env
-
-const JWT_SECRET = process.env.JWT_SECRET ;
-const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '1h'; // Durée d'expiration du token, par défaut 1 heure
-
-// controller pour l'authentification de l'utilisateur par username et mot de passe
+// controller pour l'authentification de l'utilisateur par email et mot de passe
 
 const loginController = async (req, res) => {
     try {
@@ -33,7 +26,7 @@ const loginController = async (req, res) => {
         if (!user.is_actif && user.date_demande !== null) {
             return res.status(403).json({ message: 'Compte inactif, veuillez attendre la validation de l\'administrateur' });
         }
-        const token = jwt.sign({ userId: user.id_utilisateur }, JWT_SECRET, { expiresIn: JWT_EXPIRATION });
+        const token = generateToken(user.id_utilisateur, user.id_role); // Génération du token JWT
         res.json({ 
             message: 'Connexion réussie',
             token,
@@ -43,7 +36,7 @@ const loginController = async (req, res) => {
                 nom: user.noms,
                 prenom: user.prenoms,
                 matricule: user.matricule,
-                role: user.role
+                id_role: user.id_role, // Assurez-vous que l'utilisateur a un rôle associé
             }
          });
     } catch (error) {

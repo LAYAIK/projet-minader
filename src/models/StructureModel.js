@@ -11,6 +11,14 @@ const Structure = sequelize.define('Structure', {
   description: {
     type: DataTypes.TEXT,
     allowNull: true 
+  },
+  date_transite: {
+    type: DataTypes.DATE,
+    allowNull: true // Date de transite peut être optionnelle
+  },
+  nom: {
+    type: DataTypes.STRING(100),
+    allowNull: false // Nom de la structure obligatoire
   }
   
 }, {

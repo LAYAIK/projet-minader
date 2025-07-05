@@ -1,6 +1,7 @@
 import  {sequelize, connectDB}  from './src/config/db.js'; // Notez l'extension .js
 import 'dotenv/config'; // Charge les variables d'environnement depuis le fichier .env
 import app from './app.js';
+import * as models from "./src/models/index.js"; // Importez tous les modèles
 
 
 const PORT = process.env.PORT || 3000;

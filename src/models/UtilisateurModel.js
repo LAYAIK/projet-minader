@@ -12,29 +12,36 @@ import bcrypt from 'bcrypt';
  *         id_utilisateur:
  *           type: string
  *           format: uuid
+ *           description: Identifiant unique de l'utilisateur
+ *           example: "123e4567-e89b-12d3-a456-426614174000"
  *         noms:
  *           type: string
+ *           example: "Dupont"
+ *           description: Nom de l'utilisateur
  *         prenoms:
  *           type: string
+ *           example: "Jean"
  *         adresse_email:
  *           type: string
+ *           format: email
+ *           example: "admin@gmail.com"
  *         password:
  *           type: string
- *         matricule:
- *           type: string
+ *           format: password
+ *           example: "password123"
  *         fonction:
  *           type: string
+ *           example: "admin"
  *         direction:
  *           type: string
+ *           example: "Direction Générale"
  *         justificatif:
  *           type: string
+ *           example: "Justificatif de fonction"
  *         date_demande:
  *           type: string
  *           format: date-time
- *         date_naissance: 
- *           type: string
- *         role:
- *           type: string
+ *      
  */
 
 const Utilisateur = sequelize.define('Utilisateur', {
@@ -64,11 +71,6 @@ const Utilisateur = sequelize.define('Utilisateur', {
     type: DataTypes.STRING(150),
     allowNull: true
   },
-  matricule: {
-    type: DataTypes.STRING(50),
-    allowNull: true, 
-    unique: true
-  },
   fonction: { // Ex: 'Administrateur', 'Utilisateur', 'Agent'
     type: DataTypes.STRING(100),
     allowNull: true
@@ -81,19 +83,6 @@ const Utilisateur = sequelize.define('Utilisateur', {
     type: DataTypes.STRING(255),
     allowNull: true, // Justificatif peut être optionnel
   },
-  date_naissance: {
-    type: DataTypes.DATE,
-    allowNull: true, // Date de naissance peut être optionnelle
-  },
-  date_demande: {
-      type: DataTypes.DATE,
-      allowNull: true, // Date de demande peut être optionnelle
-  },  
-  role: { // Ex: 'admin', 'user', 'agent'
-    type: DataTypes.STRING(50),
-    defaultValue: 'user',
-    allowNull: false
-  },
   is_actif: {
     type: DataTypes.BOOLEAN,
     defaultValue: false, // Par défaut, l'utilisateur n'est pas actif
@@ -103,25 +92,6 @@ const Utilisateur = sequelize.define('Utilisateur', {
   tableName: 'Utilisateurs',
   timestamps: true,
   underscored: true,
-  // hooks: {
-  //   beforeCreate: async (utilisateur) => {
-  //     if (utilisateur.mot_de_passe) {
-  //       const salt = await bcrypt.genSalt(10);
-  //       utilisateur.mot_de_passe = await bcrypt.hash(utilisateur.mot_de_passe, salt);
-  //     }
-  //   },
-  //   beforeUpdate: async (utilisateur) => {
-  //     if (utilisateur.changed('mot_de_passe') && utilisateur.mot_de_passe) {
-  //       const salt = await bcrypt.genSalt(10);
-  //       utilisateur.mot_de_passe = await bcrypt.hash(utilisateur.mot_de_passe, salt);
-  //     }
-  //   }
-  // }
 });
-
-// Méthode d'instance pour comparer les mots de passe
-// Utilisateur.prototype.comparePassword = async function(candidatePassword) {
-//   return bcrypt.compare(candidatePassword, this.mot_de_passe);
-// };
 
 export default Utilisateur;

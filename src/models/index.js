@@ -5,13 +5,14 @@ import { sequelize } from '../config/db.js';
 import Structure from './StructureModel.js';
 import Courrier from './CourrierModel.js';
 import Note from './NoteModel.js';
-import PieceJointe from './PieceJointeModel.js';
+import Document from './DocumentModel.js';
 import Utilisateur from './UtilisateurModel.js';
 import TypeCourrier from './TypeCourrierModel.js';
 import Personnel from './PersonnelModel.js';
 import TypePersonnel from './TypePersonnelModel.js';
 import Messagerie from './MessagerieModel.js';
 import Archive from './ArchiveModel.js';
+import Role from './RoleModel.js';
 import Transiter from './TransiterModel.js'; // La table de jonction explicite
 
 // --- Définition des Associations ---
@@ -24,9 +25,9 @@ Utilisateur.belongsTo(Structure, { foreignKey: 'id_structure', as: 'structure_ap
 
 // Utilisateur - Courrier (Envoyer)
 // 1 Utilisateur peut envoyer plusieurs Courriers (1..* côté Courrier)
-// 1 Courrier est envoyé par 1 Utilisateur (1..1 côté Utilisateur)
+// 1 Courrier est envoyé par plusieurs Utilisateur (1..* côté Utilisateur)
 Utilisateur.hasMany(Courrier, { foreignKey: 'id_expediteur', as: 'courriers_envoyes' });
-Courrier.belongsTo(Utilisateur, { foreignKey: 'id_expediteur', as: 'expediteur' });
+Courrier.hasMany(Utilisateur, { foreignKey: 'id_expediteur', as: 'expediteur' });
 
 // Courrier - Note (Contenir)
 // 1 Courrier peut contenir plusieurs Notes (1..* côté Note)
@@ -37,8 +38,8 @@ Note.belongsTo(Courrier, { foreignKey: 'id_courrier', as: 'courrier_contenant' }
 // Courrier - Pièce_jointe (Posseder)
 // 1 Courrier peut posséder plusieurs Pièces_jointes (0..* côté Pièce_jointe)
 // 1 Pièce_jointe appartient à 1 Courrier (1..1 côté Pièce_jointe -> 1 Courrier)
-Courrier.hasMany(PieceJointe, { foreignKey: 'id_courrier', as: 'pieces_jointes' });
-PieceJointe.belongsTo(Courrier, { foreignKey: 'id_courrier', as: 'courrier_parent' });
+Courrier.hasMany(Document, { foreignKey: 'id_courrier', as: 'documents' });
+Document.belongsTo(Courrier, { foreignKey: 'id_courrier', as: 'courrier_parent' });
 
 // Courrier - Type_courrier (Relation simple, type du courrier)
 // 1 Type_courrier peut être associé à plusieurs Courriers
@@ -49,8 +50,8 @@ Courrier.belongsTo(TypeCourrier, { foreignKey: 'id_type_courrier', as: 'type_de_
 // Pièce_jointe - Type_courrier (Posseder)
 // 1 Type_courrier peut être associé à plusieurs Pièces_jointes (0..* côté Pièce_jointe)
 // 1 Pièce_jointe est d'un seul Type_courrier
-TypeCourrier.hasMany(PieceJointe, { foreignKey: 'id_type_courrier', as: 'pieces_jointes_de_ce_type' });
-PieceJointe.belongsTo(TypeCourrier, { foreignKey: 'id_type_courrier', as: 'type_de_piece_jointe' });
+TypeCourrier.hasMany(Document, { foreignKey: 'id_type_courrier', as: 'documents_de_ce_type' });
+Document.belongsTo(TypeCourrier, { foreignKey: 'id_type_courrier', as: 'type_de_document' });
 
 
 // Personnel - Type_Personnel (Avoir)
@@ -64,17 +65,6 @@ Personnel.belongsTo(TypePersonnel, { foreignKey: 'id_type_personnel', as: 'type_
 // 1 Personnel dispose d'une seule Structure
 Structure.hasMany(Personnel, { foreignKey: 'id_structure', as: 'personnels_disposant' });
 Personnel.belongsTo(Structure, { foreignKey: 'id_structure', as: 'structure_disposant' });
-
-// Personnel - Type_courrier (Posseder - interprété comme spécialisation/gestion)
-// 1 Type_courrier peut être géré par plusieurs Personnels
-// 1 Personnel peut gérer 1 Type_courrier (ou être spécialisé dans)
-TypeCourrier.hasMany(Personnel, { foreignKey: 'id_type_courrier', as: 'personnels_specialises' });
-Personnel.belongsTo(TypeCourrier, { foreignKey: 'id_type_courrier', as: 'specialisation_courrier' });
-
-// Personnel - Utilisateur (Si un Personnel est aussi un Utilisateur)
-// 1 Utilisateur peut être 1 Personnel (1..1)
-// On peut faire une relation One-to-One ou simplement lier via la clé étrangère
-Utilisateur.hasOne(Personnel, { foreignKey: 'id_utilisateur', as: 'profil_personnel' });
 
 
 // Structure - Courrier (Transiter) - Relation Many-to-Many via la table Transiter
@@ -102,20 +92,27 @@ Courrier.belongsTo(Archive, { foreignKey: 'id_courrier', as: 'archive_associee' 
 Archive.belongsTo(Utilisateur, { foreignKey: 'id_utilisateur', as: 'utilisateur_archivant' });
 Utilisateur.hasMany(Archive, { foreignKey: 'id_utilisateur', as: 'archives_utilisateur' });
 
+// Role - Utilisateur (Relation de rôle)
+// 1 Role peut être associé à plusieurs Utilisateurs
+// 1 Utilisateur peut avoir plusieurs Roles
+Role.hasMany(Utilisateur, { foreignKey: 'id_role', as: 'utilisateurs_de_ce_role' });
+Utilisateur.belongsTo(Role, { foreignKey: 'id_role', as: 'role_de_l_utilisateur' });
+
 
 
 // Exportation de l'instance sequelize et de tous les modèles
-export {
+export default{
   sequelize,
   Structure,
   Courrier,
   Note,
-  PieceJointe,
+  Document,
   Utilisateur,
   TypeCourrier,
   Personnel,
   TypePersonnel,
   Transiter,
   Messagerie,
-  Archive
+  Archive,
+  Role
 };
