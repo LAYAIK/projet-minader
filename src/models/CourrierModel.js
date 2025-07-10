@@ -1,30 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 
-/**
- * @swagger
- * components:
- *   schemas:
- *     Courier:
- *       type: object
- *       properties:
- *         id_courrier:
- *           type: string
- *           format: uuid
- *         objet:
- *           type: string
- *         date_depot:
- *           type: string
- *           format: date-time
- *         numero_courrier:
- *           type: string
- *         nature:
- *           type: string
- *       required:
- *         - objet
- *         - date_depot
- *         - numero_courrier
- */
 
 const Courrier = sequelize.define('Courrier', {
   id_courrier: {
@@ -37,8 +13,8 @@ const Courrier = sequelize.define('Courrier', {
     type: DataTypes.STRING(255),
     allowNull: false
   },
-  date_depot: {
-    type: DataTypes.DATEONLY,
+  contenu: {
+    type: DataTypes.TEXT,
     allowNull: false
   },
   numero_courrier: {
@@ -46,7 +22,7 @@ const Courrier = sequelize.define('Courrier', {
     allowNull: false,
     unique: true
   },
-  id_receveurs: { // Liste des ID des receveurs du courrier (ex: ['123e4567-e89b-12d3-a456-426614174000'])
+  id_destinataires: { // Liste des ID des receveurs du courrier (ex: ['123e4567-e89b-12d3-a456-426614174000'])
     type: DataTypes.ARRAY(DataTypes.UUID),
     allowNull: true
   },
@@ -55,8 +31,51 @@ const Courrier = sequelize.define('Courrier', {
     allowNull: false,
     defaultValue: 'En attente'
   },
+  priorite: { // Priorité du courrier (ex: 'Haute', 'Normale', 'Basse')
+    type: DataTypes.STRING(50),
+    allowNull: true,
+    defaultValue: 'Normale'
+  },
+  id_structure: { // ID de la structure associée au courrier
+    type: DataTypes.UUID,
+    allowNull: true
+  },
+  date_reception: { // Date de réception du courrier
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  date_envoi: { // Date d'envoi du courrier
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  date_traitement: { // Date de traitement du courrier
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  est_archive: { // Indique si le courrier est archivé (true/false)
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
+  },
+  documents_associes: { // Liste des IDs des documents associés au courrier (ex: ['123e4567-e89b-12d3-a456-426614174000'])
+    type: DataTypes.ARRAY(DataTypes.UUID),
+    allowNull: true
+  },
   nature: { // Nature du courrier (ex: 'Demande', 'Rapport', 'Facture')
     type: DataTypes.STRING(100),
+    allowNull: true
+  },
+  date_archivage: { // Date d'archivage du courrier
+    type: DataTypes.DATE,
+    allowNull: true
+  },
+  
+  id_expediteur: { // ID de l'expéditeur du courrier
+    type: DataTypes.UUID,
+    allowNull: true
+  },
+  type_courrier: { // Type de courrier (ex: 'Entrant', 'Sortant'. 'Interne')
+    type: DataTypes.STRING(50),
     allowNull: true
   }
 }, {

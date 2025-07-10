@@ -14,7 +14,6 @@ import express from "express";
  *         required: true
  *         schema:
  *           type: string
- *           format: uuid
  *         description: ID du personnel à mettre à jour
  *     requestBody:
  *       required: true
@@ -68,7 +67,6 @@ import express from "express";
  *         required: true
  *         schema:
  *           type: string
- *           format: uuid
  *         description: Identifiant unique du personnel
  *     responses:
  *       200:
@@ -109,7 +107,6 @@ import express from "express";
  *         required: true
  *         schema:
  *           type: string
- *           format: uuid
  *         description: ID du personnel à supprimer
  *     responses:
  *       204:

@@ -5,6 +5,7 @@ import archiveRoutes from "./archiveRoute.js";
 import utilisateurRoute from "./utilisateurRoute.js";
 import rapportRoutes from "./rapportRoute.js";
 import personnelRoutes from "./personnelRoute.js";
+import messagerieRoutes from "./messagerieRoute.js"; // Import des routes de messagerie
 
 
 
@@ -16,6 +17,7 @@ const AuthApiRoutes = (app) => {
     app.use(utilisateurRoute); // Route pour les utilisateurs
     app.use(rapportRoutes); // Route pour les rapports
     app.use(personnelRoutes); // Route pour le personnel
+    app.use('/api/messagerie',messagerieRoutes); // Route pour la messagerie
 };
 
 export default AuthApiRoutes

@@ -21,6 +21,15 @@ const options = {
         description: 'Local server',
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   apis: ['./src/routes/*.js', './src/models/*.js'], // Paths to files containing API docs (JSDoc comments)
 };

@@ -17,6 +17,9 @@ const logger = pino({
     transport: {
         target: 'pino-pretty', // pour formater les logs de manière lisible
         options: {
+            
+            ignore: 'pid,hostname', // ignorer les informations de processus et d'hôte
+            translateTime: 'SYS:standard', // pour afficher l'heure dans un format standard
             colorize: true  // pour colorer les logs dans la console
         }
     }

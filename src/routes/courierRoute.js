@@ -6,7 +6,8 @@ import express from "express";
  * @author Firstname Lastname
  */
 
-/** * @swagger
+/** 
+ * @swagger
  * tags:
  *   - name: Courriers
  *     description: Gestion des courriers
@@ -20,26 +21,72 @@ import express from "express";
  *           format: uuid
  *         objet:
  *           type: string
- *         date_depot:
+ *         date_envoi:
  *           type: string
  *           format: date-time
  *         numero_courrier:
  *           type: string
  *         nature:
  *           type: string
+ *         id_expediteur:
+ *           type: string
+ *           format: uuid
+ *         type_courrier:
+ *           type: string
+ *         date_reception:
+ *           type: string
+ *           format: date-time
+ *         id_destinataires:
+ *           type: array
+ *           items:
+ *             type: string
+ *             format: uuid
+ *         contenu:
+ *           type: string
+ *         est_archive:
+ *           type: boolean
+ *         documents_associes:
+ *           type: array
+ *           items:
+ *             type: uuid
+ *         id_structure:
+ *           type: string
+ *           format: uuid
+ *         priorite:
+ *           type: string
+ *         status:
+ *           type: string
+ *         date_archivage:
+ *           type: string
+ *           format: date-time
+ *         date_traitement: 
+ *           type: string
+ *           format: date-time
  *       required:
- *         - id_courrier
  *         - objet
- *         - date_depot
  *         - numero_courrier
+ *         - nature
+ *         - id_expediteur
+ *         - contenu
  *       example:
- *         id_courrier: "123e4567-e89b-12d3-a456-426614174000"
  *         objet: "Demande d'information"
- *         date_depot: "2023-10-01T12:00:00Z"
+ *         date_envoi: "2023-10-01T12:00:00Z"
  *         numero_courrier: "C123456789"
  *         nature: "Entrant"
- */
-/** * @swagger
+ *         id_expediteur: "123e4567-e89b-12d3-a456-426614174001"
+ *         type_courrier: "Entrant"
+ *         id_destinataires: ["123e4567-e89b-12d3-a456-426614174003", "123e4567-e89b-12d3-a456-426614174004"]
+ *         est_archive: false
+ *         documents_associes: ["123e4567-e89b-12d3-a456-426614174002"]
+ *         id_structure: "123e4567-e89b-12d3-a456-426614174005"
+ *         contenu: "Bonjour, je suis un courrier."
+ *         priorite: "Normale"
+ *         status: "En attente" 
+ *         date_archivage: "2023-10-01T12:00:00Z"
+ *         date_traitement: "2023-10-01T12:00:00Z"
+ *         date_reception: "2023-10-01T12:00:00Z"
+ *  
+ * @swagger
  * /api/couriers:
  *   get:
  *     summary: Récupérer tous les courriers

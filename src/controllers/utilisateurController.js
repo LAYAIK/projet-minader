@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 
 // Création d'un utilisateur
 async function createUserController(req, res) {
-    const { adresse_email, password, password_confirmation, noms, prenoms } = req.body;
+    const { adresse_email, password, password_confirmation, noms, prenoms, fonction,direction , justificatif,id_role, id_structure, id_expediteur } = req.body;
 
     if (!adresse_email || !password || !noms || !password_confirmation) {
         return res.status(400).json({
@@ -34,7 +34,13 @@ async function createUserController(req, res) {
             adresse_email,
             noms,
             password: hashedPassword,
-            prenoms
+            prenoms,
+            fonction,
+            direction,
+            justificatif,
+           // id_role,
+            //id_structure,
+           // id_expediteur
         });
 
         // Exclure le mot de passe de la réponse
@@ -60,7 +66,7 @@ async function createUserController(req, res) {
 async function getAllUsersController(req, res) {
     try {
         const users = await Utilisateur.findAll({
-            attributes: { exclude: ['password', 'refreshToken'] }
+            attributes: { exclude: ['password', 'refreshToken'] } // Exclure le mot de passe et le refreshToken de la réponse
         });
 
         if (!users || users.length === 0) {
@@ -72,7 +78,6 @@ async function getAllUsersController(req, res) {
 
         return res.status(200).json({
             success: true,
-            count: users.length,
             data: users
         });
 
@@ -98,14 +103,14 @@ async function getUserByIdController(req, res) {
 
     try {
         let user;
-        if (/^\d+$/.test(id)) {
+        if (/^\d+$/.test(id)) { // verifier si l'id est un nombre
             user = await Utilisateur.findByPk(id, { attributes: { exclude: ['password', 'refreshToken'] } });
         } else {
             user = await Utilisateur.findOne({
                 where: {
                     [Op.or]: [
                         { adresse_email: id },
-                        //{ noms: id }
+                        { id_utilisateur: id }
                     ]
                 },
                 attributes: { exclude: ['password', 'refreshToken'] }
@@ -134,22 +139,51 @@ async function getUserByIdController(req, res) {
         });
     }
 }
-
-// Mise à jour d'un utilisateur
 async function updateUserController(req, res) {
     const { id } = req.params;
-    const updateData = { ...req.body };
+    const {password, noms, prenoms, fonction, direction, justificatif, id_role, id_structure, id_expediteur,adresse_email } = req.body || {};
 
     if (!id) {
         return res.status(400).json({
             success: false,
-            message: "ID, adresse_email ou noms est requis"
+            message: "ID ou adresse_email est requis"
         });
     }
 
     try {
-        if (updateData.password) {
-            updateData.password = await bcrypt.hash(updateData.password, 10);
+        if (password) {
+            hashedpassword = await bcrypt.hash(password, 10);
+        }
+        const updateData = {};
+        if (password) {
+            updateData.password = hashedpassword;
+        }
+        if (noms) {
+            updateData.noms = noms;
+        }
+        if (prenoms) {
+            updateData.prenoms = prenoms;
+        }
+        if (fonction) {
+            updateData.fonction = fonction;
+        }
+        if (direction) {
+            updateData.direction = direction;
+        }
+        if (justificatif) {
+            updateData.justificatif = justificatif;
+        }
+        if (id_role) {
+            updateData.id_role = id_role;
+        }
+        if (id_structure) {
+            updateData.id_structure = id_structure;
+        }
+        if (id_expediteur) {
+            updateData.id_expediteur = id_expediteur;
+        }
+        if (adresse_email) {
+            updateData.adresse_email = adresse_email;
         }
 
         let filter;
@@ -159,15 +193,13 @@ async function updateUserController(req, res) {
             filter = {
                 [Op.or]: [
                     { adresse_email: id },
-                    //{ noms: id }
+                    { id_utilisateur: id }
                 ]
             };
         }
-
         const [updatedRows, [updatedUser]] = await Utilisateur.update(updateData, {
             where: filter,
-            returning: true,
-            individualHooks: true
+            returning: true 
         });
 
         if (!updatedUser) {
@@ -213,8 +245,8 @@ async function deleteUserController(req, res) {
         } else {
             filter = {
                 [Op.or]: [
-                    { adresse_email: id }
-                   // { noms: id }
+                    { adresse_email: id },
+                    { id_utilisateur: id }
                 ]
             };
         }
@@ -275,21 +307,22 @@ async function authenticateUserController(req, res) {
             });
         }
         const role = await Role.findByPk(user.id_role);
-        const token = generateToken(user.id, role.nom_role);
+        const token = generateToken(user.id_utilisateur, role.nom);
 
         return res
-            .cookie('token', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: 'strict',
-                maxAge: 24 * 60 * 60 * 1000
-            })
+            // .header('Authorization', `Bearer ${token}`) // Ajouter le token dans l'en-tête de la réponse
+            // .cookie('token', token, {  // Créer un cookie avec le token
+            //     httpOnly: true,
+            //     secure: process.env.NODE_ENV === 'production',
+            //     sameSite: 'strict',
+            //     maxAge: 24 * 60 * 60 * 1000
+            // })
             .status(200)
             .json({
+                token,
                 success: true,
                 message: "Authentification réussie",
                 data: {
-                    token,
                     id: user.id,
                     adresse_email: user.adresse_email,
                     noms: user.noms,
@@ -307,11 +340,54 @@ async function authenticateUserController(req, res) {
     }
 }
 
+// controller pour rechercher un utilisateur par son noms, email,id,fonction, direction, prenoms
+async function searchUserController(req, res) {
+    const { query } = req.query;    
+    if (!query) {
+        return res.status(400).json({
+            success: false,
+            message: "La requête de recherche est requise"
+        });
+    }
+    try {
+        const users = await Utilisateur.findAll({
+            where: {
+                [Op.or]: [
+                    { adresse_email: { [Op.iLike]: `%${query}%` } },
+                    { noms: { [Op.iLike]: `%${query}%` } },
+                    { prenoms: { [Op.iLike]: `%${query}%` } },
+                    { fonction: { [Op.iLike]: `%${query}%` } },
+                    { direction: { [Op.iLike]: `%${query}%` } }
+                ]
+            }
+        });
+        if (!users || users.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "Aucun utilisateur trouvé"
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            data: users,
+        });      
+    } catch (error) {
+        console.error('Erreur lors de la recherche de l\'utilisateur:', error);
+        return res.status(500).json({
+            success: false,
+            message: "Erreur lors de la recherche de l'utilisateur",
+            system_message: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+
+    }
+}
+
 export {
     createUserController,
     getAllUsersController,
     getUserByIdController,
     updateUserController,
     deleteUserController,
-    authenticateUserController
+    authenticateUserController,
+    searchUserController
 };

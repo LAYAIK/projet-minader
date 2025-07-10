@@ -19,6 +19,10 @@ export const createRole = async(req, res) => {
 export const getAllRoles = async(req, res) => {
     try {
         const roles = await Role.findAll();
+        if (roles.length === 0) {
+            return res.status(404).json({ message: 'Aucun rôle trouvé' });
+        }
+         // Exclure le mot de passe de la réponse
         res.status(200).json(roles);
     } catch (error) {
         console.error(error);
