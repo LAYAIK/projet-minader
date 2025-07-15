@@ -1,6 +1,4 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../config/db.js";
-
+export default (sequelize, DataTypes) => {
 const Archive = sequelize.define("Archive", {
     id_archive: {
         type: DataTypes.UUID,
@@ -22,5 +20,10 @@ const Archive = sequelize.define("Archive", {
     timestamps: true,
     underscored: true
 });
+Archive.associate = function (models) {
+    Archive.hasMany(models.Document, { foreignKey: "id_archive" });
+    Archive.hasMany(models.Courrier, { foreignKey: "id_archive" });
+};
 
-export default Archive;
+return Archive;
+};

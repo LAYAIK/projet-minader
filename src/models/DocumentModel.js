@@ -1,11 +1,13 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.js';
-
+export default (sequelize, DataTypes) => {
 const Document = sequelize.define('Document', {
   id_document: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
+    allowNull: false
+  },
+  libelle: {
+    type: DataTypes.STRING(100),
     allowNull: false
   },
   description: {
@@ -17,5 +19,13 @@ const Document = sequelize.define('Document', {
   timestamps: true,
   underscored: true
 });
+// associations
+Document.associate = (models) => {
+  Document.belongsTo(models.TypeDocument, { foreignKey: 'id_type_document', targetKey: 'id_type_document', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+  Document.belongsTo(models.Courrier, { foreignKey: 'id_courrier', targetKey: 'id_courrier', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+  Document.belongsToMany(models.Structure, { through: models.Transiter,   foreignKey: 'id_document',   otherKey: 'id_structure',  });
+  Document.belongsTo(models.Archive, { foreignKey: 'id_archive', targetKey: 'id_archive', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+}
 
-export default Document;
+return Document;
+};

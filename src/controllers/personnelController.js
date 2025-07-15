@@ -1,8 +1,6 @@
-import Personnel from "../models/PersonnelModel.js";
-import { Op } from "sequelize";
-
-
-
+import db from '../models/index.js';
+const { Personnel } = db;
+import { Op } from 'sequelize';
 export const getAllPersonnel = async (req, res) => {
     try {
         const personnel = await Personnel.findAll();

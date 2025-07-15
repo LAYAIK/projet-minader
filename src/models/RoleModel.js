@@ -1,41 +1,4 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.js';
-
-/** * Modèle de données pour les rôles.
- * Représente un rôle dans le système avec des permissions associées.
- */
-
-/** * @typedef {Object} Role
- * @property {string} id_role - Identifiant unique du rôle (UUID).
- * @property {string} nom - Nom du rôle.
- * @property {string} [description] - Description du rôle.
- * @property {Array<string>} [Permissions] - Liste des permissions associées au rôle.
- */
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     Role:
- *       type: object
- *       properties:
- *         id_role:
- *           type: string
- *           format: uuid
- *         nom:
- *           type: string
- *         description:
- *           type: string
- *         Permissions:
- *           type: array
- *           items:
- *             type: string
- *             example: "read"
- * required:
- *   - id_role
- *   - nom
- */
-
+export default (sequelize, DataTypes) => {    
 const Role = sequelize.define('Role', {
     id_role: {
         type: DataTypes.UUID,
@@ -61,5 +24,10 @@ const Role = sequelize.define('Role', {
     timestamps: true,
     underscored: true
 });
+Role.associate = (models) => {
+    Role.hasMany(models.Utilisateur, { foreignKey: 'id_role' });
+    Role.belongsToMany(models.Courrier, { through: models.Transiter, foreignKey: 'id_role', otherKey: 'id_courrier' });
+};
 
-export default Role;
+return Role;
+};

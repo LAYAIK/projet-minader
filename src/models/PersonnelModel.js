@@ -1,5 +1,4 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.js';
+export default (sequelize, DataTypes) => {
 
 const Personnel = sequelize.define('Personnel', {
   id_personnel: {
@@ -43,4 +42,10 @@ const Personnel = sequelize.define('Personnel', {
   underscored: true
 });
 
-export default Personnel;
+Personnel.associate = (models) => { 
+  Personnel.belongsTo(models.Structure , { foreignKey: 'id_structure', targetKey: 'id_structure', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+  Personnel.belongsTo(models.TypePersonnel, { foreignKey: 'id_type_personnel', targetKey: 'id_type_personnel', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+};
+
+return Personnel;
+};

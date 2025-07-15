@@ -1,6 +1,4 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.js';
-
+export default (sequelize, DataTypes) => {
 const Structure = sequelize.define('Structure', {
   id_structure: {
     type: DataTypes.UUID,
@@ -12,13 +10,14 @@ const Structure = sequelize.define('Structure', {
     type: DataTypes.TEXT,
     allowNull: true 
   },
-  date_transite: {
+  date_creation: {
     type: DataTypes.DATE,
-    allowNull: true // Date de transite peut être optionnelle
+    allowNull: true // Date de transite peutêtre optionnelle
   },
   nom: {
     type: DataTypes.STRING(100),
-    allowNull: false // Nom de la structure obligatoire
+    allowNull: false, // Nom de la structure obligatoire
+    unique: true
   }
   
 }, {
@@ -27,4 +26,15 @@ const Structure = sequelize.define('Structure', {
   underscored: true // Utilise snake_case pour les noms de colonnes
 });
 
-export default Structure;
+// association avec la table Courrier
+Structure.associate = (models) => {
+  Structure.hasMany(models.Courrier, {foreignKey: 'id_structure' });
+  Structure.belongsToMany(models.Courrier, { through: models.Transiter,   foreignKey: 'id_structure_expediteur', targetKey: 'id_structure',  otherKey: 'id_courrier',  });
+  Structure.belongsToMany(models.Courrier, { through: models.Transiter,   foreignKey: 'id_structure_destinataire', targetKey: 'id_structure',  otherKey: 'id_courrier',  });
+  Structure.belongsToMany(models.Document, { through: models.Transiter,   foreignKey: 'id_structure_destinataire',   otherKey: 'id_document',  });
+  Structure.hasMany(models.Personnel, {foreignKey: 'id_structure' });
+};
+
+return Structure;
+
+};

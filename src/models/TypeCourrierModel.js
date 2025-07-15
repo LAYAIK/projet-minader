@@ -1,6 +1,4 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.js';
-
+export default (sequelize, DataTypes) => { 
 const TypeCourrier = sequelize.define('TypeCourrier', {
   id_type_courrier: {
     type: DataTypes.UUID,
@@ -22,5 +20,9 @@ const TypeCourrier = sequelize.define('TypeCourrier', {
   timestamps: true,
   underscored: true
 });
-
-export default TypeCourrier;
+// associations
+TypeCourrier.associate = (models) => {
+  TypeCourrier.hasMany(models.Courrier, { foreignKey: 'id_type_courrier' });
+}
+return TypeCourrier;
+};

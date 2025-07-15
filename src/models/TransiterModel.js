@@ -1,8 +1,4 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.js';
-import Courrier from './CourrierModel.js';
-import Structure from './StructureModel.js';
-
+export default (sequelize, DataTypes) => {
 const Transiter = sequelize.define('Transiter', {
   id: { // Clé primaire pour la table de jonction
     type: DataTypes.UUID,
@@ -10,7 +6,7 @@ const Transiter = sequelize.define('Transiter', {
     primaryKey: true,
     allowNull: false
   },
-  date_transite: {
+  date_transition: {
     type: DataTypes.DATE, // Ou DataTypes.DATEONLY si seulement la date
     allowNull: false
   },
@@ -20,9 +16,10 @@ const Transiter = sequelize.define('Transiter', {
   },
   // Clés étrangères définies via les associations dans index.js
 }, {
-  tableName: 'Transits',
+  tableName: 'Transition_Structure',
   timestamps: true,
   underscored: true
 });
 
-export default Transiter;
+return Transiter;
+};

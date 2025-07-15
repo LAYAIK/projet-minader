@@ -1,5 +1,6 @@
 // src/controllers/reportController.js
-import  Courrier  from '../models/courrierModel.js'; // Assurez-vous d'importer votre modèle
+import  db from '../models/index.js';
+const { Courrier } = db;
 import { Op, Sequelize } from 'sequelize'; // N'oubliez pas Sequelize pour les fonctions d'agrégation
 import { Parser } from 'json2csv'; // Installez : npm install json2csv
 import PDFDocument from 'pdfkit'; // Installez : npm install pdfkit

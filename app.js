@@ -7,8 +7,6 @@ import swaggerSetup from './swagger.js';
 import AuthApiRoutes from './src/routes/index.js'; // importation des routes d'authentification
 
 
-
-
 const app = express(); // création de l'application express
 app.use(bodyParser.json()); // pour parser le corps des requêtes JSON
 
@@ -24,6 +22,7 @@ const logger = pino({
         }
     }
 });
+
 app.use(pinoHttp({ logger })); // middleware pour logger les requêtes HTTP
 
 swaggerSetup(app); // initialisation de swagger

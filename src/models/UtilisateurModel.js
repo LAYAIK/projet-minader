@@ -1,49 +1,4 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.js';
-import bcrypt from 'bcrypt';
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     Utilisateur:
- *       type: object
- *       properties:
- *         id_utilisateur:
- *           type: string
- *           format: uuid
- *           description: Identifiant unique de l'utilisateur
- *           example: "123e4567-e89b-12d3-a456-426614174000"
- *         noms:
- *           type: string
- *           example: "Dupont"
- *           description: Nom de l'utilisateur
- *         prenoms:
- *           type: string
- *           example: "Jean"
- *         adresse_email:
- *           type: string
- *           format: email
- *           example: "admin@gmail.com"
- *         password:
- *           type: string
- *           format: password
- *           example: "password123"
- *         fonction:
- *           type: string
- *           example: "admin"
- *         direction:
- *           type: string
- *           example: "Direction Générale"
- *         justificatif:
- *           type: string
- *           example: "Justificatif de fonction"
- *         date_demande:
- *           type: string
- *           format: date-time
- *      
- */
-
+export default (sequelize, DataTypes) => {
 const Utilisateur = sequelize.define('Utilisateur', {
   id_utilisateur: {
     type: DataTypes.UUID,
@@ -93,5 +48,13 @@ const Utilisateur = sequelize.define('Utilisateur', {
   timestamps: true,
   underscored: true,
 });
-
-export default Utilisateur;
+// Association entre Utilisateur et Structure
+Utilisateur.associate = (models) => {
+  Utilisateur.belongsTo(models.Structure, { foreignKey: 'id_structure', targetKey: 'id_structure', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+  Utilisateur.hasMany(models.Courrier, { foreignKey: 'id_utilisateur',   onDelete: 'SET NULL',   onUpdate: 'CASCADE'  });
+  Utilisateur.belongsToMany(models.Courrier, { through: models.CourrierUtilisateur,  foreignKey: 'id_expediteur', targetKey: 'id_utilisateur',  otherKey: 'id_courrier' });
+  Utilisateur.belongsToMany(models.Courrier, { through: models.CourrierUtilisateur,  foreignKey: 'id_destinataire', targetKey: 'id_utilisateur',  otherKey: 'id_courrier' });
+  //Utilisateur.belongsToMany(models.Courrier, { through: models.Transiter, foreignKey: 'id_utilisateur', otherKey: 'id_courrier' });
+};
+return Utilisateur;
+};

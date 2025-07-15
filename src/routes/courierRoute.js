@@ -19,42 +19,33 @@ import express from "express";
  *         id_courrier:
  *           type: string
  *           format: uuid
- *         objet:
+ *         id_objet:
  *           type: string
  *         date_envoi:
  *           type: string
  *           format: date-time
  *         numero_courrier:
  *           type: string
- *         nature:
+ *         id_archive:
  *           type: string
  *         id_expediteur:
  *           type: string
  *           format: uuid
- *         type_courrier:
+ *         id_type_courrier:
  *           type: string
  *         date_reception:
  *           type: string
  *           format: date-time
- *         id_destinataires:
- *           type: array
- *           items:
- *             type: string
- *             format: uuid
- *         contenu:
- *           type: string
  *         est_archive:
  *           type: boolean
  *         documents_associes:
- *           type: array
- *           items:
- *             type: uuid
+ *           type: string
  *         id_structure:
  *           type: string
  *           format: uuid
- *         priorite:
+ *         id_priorite:
  *           type: string
- *         status:
+ *         id_status:
  *           type: string
  *         date_archivage:
  *           type: string
@@ -65,7 +56,6 @@ import express from "express";
  *       required:
  *         - objet
  *         - numero_courrier
- *         - nature
  *         - id_expediteur
  *         - contenu
  *       example:
@@ -73,9 +63,7 @@ import express from "express";
  *         date_envoi: "2023-10-01T12:00:00Z"
  *         numero_courrier: "C123456789"
  *         nature: "Entrant"
- *         id_expediteur: "123e4567-e89b-12d3-a456-426614174001"
  *         type_courrier: "Entrant"
- *         id_destinataires: ["123e4567-e89b-12d3-a456-426614174003", "123e4567-e89b-12d3-a456-426614174004"]
  *         est_archive: false
  *         documents_associes: ["123e4567-e89b-12d3-a456-426614174002"]
  *         id_structure: "123e4567-e89b-12d3-a456-426614174005"

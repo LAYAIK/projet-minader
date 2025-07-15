@@ -1,7 +1,6 @@
 export default (sequelize, DataTypes) => {
-
-const TypePersonnel = sequelize.define('TypePersonnel', {
-  id_type_personnel: {
+const TypeDocument = sequelize.define('TypeDocument', {
+  id_type_document: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
@@ -10,21 +9,23 @@ const TypePersonnel = sequelize.define('TypePersonnel', {
   type: {
     type: DataTypes.STRING(100),
     allowNull: false,
-    unique: true // Assumons que le type de personnel est unique
+    unique: true
   },
   description: {
     type: DataTypes.TEXT,
     allowNull: true
   }
 }, {
-  tableName: 'Types_Personnel',
+  tableName: 'Types_Document',
   timestamps: true,
   underscored: true
 });
-TypePersonnel.associate = (models) => {
-  TypePersonnel.hasMany(models.Personnel, { foreignKey: 'id_type_personnel' });
-};  
-
-return TypePersonnel;
-    
+ 
+TypeDocument.associate = (models) => {
+  TypeDocument.hasMany(models.Document, { foreignKey: 'id_type_document'});
 };
+
+return TypeDocument;
+
+};
+
