@@ -55,6 +55,9 @@ Utilisateur.associate = (models) => {
   Utilisateur.belongsToMany(models.Courrier, { through: models.CourrierUtilisateur,  foreignKey: 'id_expediteur', targetKey: 'id_utilisateur',  otherKey: 'id_courrier' });
   Utilisateur.belongsToMany(models.Courrier, { through: models.CourrierUtilisateur,  foreignKey: 'id_destinataire', targetKey: 'id_utilisateur',  otherKey: 'id_courrier' });
   //Utilisateur.belongsToMany(models.Courrier, { through: models.Transiter, foreignKey: 'id_utilisateur', otherKey: 'id_courrier' });
+  Utilisateur.belongsToMany(models.Role, { through: models.UtilisateurRole, foreignKey: 'id_utilisateur', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+  Utilisateur.hasOne(models.Role, { foreignKey: 'id_role', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+  Utilisateur.hasMany(models.Archive, { foreignKey: 'id_utilisateur',   onDelete: 'SET NULL',   onUpdate: 'CASCADE'  });
 };
 return Utilisateur;
 };

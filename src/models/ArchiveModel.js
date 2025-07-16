@@ -22,7 +22,8 @@ const Archive = sequelize.define("Archive", {
 });
 Archive.associate = function (models) {
     Archive.hasMany(models.Document, { foreignKey: "id_archive" });
-    Archive.hasMany(models.Courrier, { foreignKey: "id_archive" });
+    Archive.hasMany(models.Courrier, { foreignKey: "id_archive", onDelete: "CASCADE" , onUpdate: "CASCADE" });
+    Archive.hasOne(models.Utilisateur, { foreignKey: "id_utilisateur", onDelete: "CASCADE" , onUpdate: "CASCADE" });
 };
 
 return Archive;

@@ -21,8 +21,12 @@ async function runApplication() {
         await db.TypeCourrier.sync({ alter: true });
         await db.Document.sync({ alter: true });
         await db.TypePersonnel.sync({ alter: true });
+        await db.Note.sync({ alter: true });
         await db.Structure.sync({ alter: true });
         await db.Utilisateur.sync({ alter: true });
+        await db.UtilisateurRole.sync({ alter: true });
+        await db.Permission.sync({ alter: true });
+        await db.RolePermission.sync({ alter: true });
         await db.Archive.sync({ alter: true });
         await db.Personnel.sync({ alter: true });
         await db.Courrier.sync({ alter: true });

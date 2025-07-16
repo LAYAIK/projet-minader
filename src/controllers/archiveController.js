@@ -1,12 +1,13 @@
-import Archive from '../models/ArchiveModel.js';
+import db from '../models/index.js';
+const { Archive } = db;
 import { Op } from 'sequelize';
-
-
-
 
 export const getAllArchives = async (req, res) => {
     try {
         const archives = await Archive.findAll();
+        if (archives.length === 0) {
+            return res.status(404).json({ message: 'Aucune archive trouvée' });
+        }
         res.status(200).json(archives);
     } catch (error) {
         console.error(error);
@@ -33,11 +34,18 @@ export const getArchiveById = async (req, res) => {
 
 export const createArchive = async (req, res) => {
     try {
-        const { description } = req.body;
-        if (!description) {
-            return res.status(400).json({ message: 'La description est requise' });
+        const { description, date_archivage, id_utilisateur,id_courrier } = req.body;
+        if ( !id_utilisateur || !id_courrier) {
+            return res.status(400).json({ message: 'La description et id du courrier est requise' });
         }
-        const newArchive = await Archive.create({ description });
+        const existing = await Archive.findOne({ where: { id_courrier } });
+        if (existing) {
+            return res.status(400).json({ message: 'Le courrier est deja archivé', existing });
+        }
+        const newArchive = await Archive.create({ id_utilisateur,id_courrier });
+        if (description) newArchive.description = description;
+        if (date_archivage) newArchive.date_archivage = date_archivage;
+        await newArchive.save();
         res.status(201).json(newArchive);
     } catch (error) {
         console.error(error);
@@ -47,12 +55,15 @@ export const createArchive = async (req, res) => {
 export const updateArchive = async (req, res) => {
     try {
         const { id } = req.params;
-        const { description } = req.body;
+        const { description, date_archivage, id_utilisateur,id_courrier } = req.body;
         const archive = await Archive.findByPk(id);
         if (!archive) {
             return res.status(404).json({ message: 'Archive non trouvée' });
         }
-        archive.description = description || archive.description;
+        if (description) archive.description = description;
+        if (date_archivage) archive.date_archivage = date_archivage;
+        if (id_utilisateur) archive.id_utilisateur = id_utilisateur;
+        if (id_courrier) archive.id_courrier = id_courrier;
         await archive.save();
         res.status(200).json(archive);
     } catch (error) {

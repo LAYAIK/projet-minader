@@ -3,19 +3,11 @@ const { Structure } = db;
 import { Op } from 'sequelize';
 export const createController = async (req, res) => {
     try {
-        const { description, nom, date_creation, id_structure } = req.body;
-        if (!description || !nom) {
+        const { description, nom, date_creation } = req.body;
+        if (!nom) {
             return res.status(400).json({ message: 'Tous les champs sont requis' });
         }
-        let filtre = {};
-        if (id_structure) filtre = { id_structure };
-        const existingStructure = await Structure.findOne({
-            where: {[Op.or]: [{ id_structure }, { nom }],},
-        });
-        if (existingStructure) {
-            return res.status(400).json({ message: 'La structure existe déjà' });
-        }
-        const createdStructure = await Structure.create({ nom,});
+        const createdStructure = await Structure.create({ nom });
         if (description) createdStructure.description = description;
         if (date_creation) createdStructure.date_creation = date_creation;
         await createdStructure.save();

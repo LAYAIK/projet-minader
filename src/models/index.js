@@ -39,46 +39,52 @@ if (config.use_env_variable) { // Optionnel: si vous utilisez une variable d'env
   );
 }
 
-const db = {};
+const db = {}; // Objet pour stocker les modèles
 
 db.Sequelize = Sequelize; // Sequelize est déjà importé en tant que classe
-db.sequelize = sequelize;
+db.sequelize = sequelize; // La connexion est déjà importé
 
 // Importez et définissez tous vos modèles ici
 // Assurez-vous que les noms des fichiers correspondent et que vous les ajoutez à l'objet db
-// IMPORTANT : Ajoutez l'extension .js à la fin des chemins de vos modèles locaux
-import StatusModel from './StatusModel.js';
-import PrioriteModel from './PrioriteModel.js';
-import ObjetModel from './objetModel.js';
-import TypeCourrierModel from './TypeCourrierModel.js';
-import TypeDocumentModel from './TypeDocumentModel.js';
-import ArchiveModel from './ArchiveModel.js';
-import CourrierUtilisateurModel from './CourrierUtilisateurModel.js';
-import TypePersonnelModel from './TypePersonnelModel.js';
-import StructureModel from './StructureModel.js';
-import UtilisateurModel from './UtilisateurModel.js'
-import PersonnelModel from './PersonnelModel.js';
-import CourrierModel from './CourrierModel.js';
-import DocumentModel from './DocumentModel.js';
-import RoleModel from './RoleModel.js';
-import TransiterModel from './TransiterModel.js';
+import Status from './StatusModel.js';
+import Priorite from './PrioriteModel.js';
+import Objet from './objetModel.js';
+import TypeCourrier from './TypeCourrierModel.js';
+import TypeDocument from './TypeDocumentModel.js';
+import Archive from './ArchiveModel.js';
+import CourrierUtilisateur from './CourrierUtilisateurModel.js';
+import TypePersonnel from './TypePersonnelModel.js';
+import Structure from './StructureModel.js';
+import Utilisateur from './UtilisateurModel.js'
+import Personnel from './PersonnelModel.js';
+import Courrier from './CourrierModel.js';
+import Document from './DocumentModel.js';
+import Role from './RoleModel.js';
+import Transiter from './TransiterModel.js';
+import Permission from './PermissionModel.js';
+import RolePermission from './RolePermissionModel.js';
+import UtilisateurRole from './UtilisateurRoleModel.js';
+import Note from './NoteModel.js';
 
-db.Status = StatusModel(sequelize, DataTypes);
-db.Priorite = PrioriteModel(sequelize, DataTypes);
-db.Objet = ObjetModel(sequelize, DataTypes);
-db.Role = RoleModel(sequelize, DataTypes);
-db.TypeCourrier = TypeCourrierModel(sequelize, DataTypes);
-
-db.TypePersonnel = TypePersonnelModel(sequelize, DataTypes);
-db.Structure = StructureModel(sequelize, DataTypes);
-db.Utilisateur = UtilisateurModel(sequelize, DataTypes);
-db.Personnel = PersonnelModel(sequelize, DataTypes);
-db.Archive = ArchiveModel(sequelize, DataTypes);
-db.Courrier = CourrierModel(sequelize, DataTypes);
-db.Document = DocumentModel(sequelize, DataTypes);
-db.CourrierUtilisateur = CourrierUtilisateurModel(sequelize, DataTypes);
-db.TypeDocument = TypeDocumentModel(sequelize, DataTypes);
-db.Transiter = TransiterModel(sequelize, DataTypes);
+db.Status = Status(sequelize, DataTypes);
+db.Priorite = Priorite(sequelize, DataTypes);
+db.Objet = Objet(sequelize, DataTypes);
+db.Role = Role(sequelize, DataTypes);
+db.TypeCourrier = TypeCourrier(sequelize, DataTypes);
+db.Note = Note(sequelize, DataTypes);
+db.TypePersonnel = TypePersonnel(sequelize, DataTypes);
+db.Structure = Structure(sequelize, DataTypes);
+db.Utilisateur = Utilisateur(sequelize, DataTypes);
+db.Personnel = Personnel(sequelize, DataTypes);
+db.Archive = Archive(sequelize, DataTypes);
+db.Courrier = Courrier(sequelize, DataTypes);
+db.Document = Document(sequelize, DataTypes);
+db.CourrierUtilisateur = CourrierUtilisateur(sequelize, DataTypes);
+db.TypeDocument = TypeDocument(sequelize, DataTypes);
+db.Transiter = Transiter(sequelize, DataTypes);
+db.Permission = Permission(sequelize, DataTypes);
+db.RolePermission = RolePermission(sequelize, DataTypes);
+db.UtilisateurRole = UtilisateurRole(sequelize, DataTypes);
 
 
 // Définissez les associations après que tous les modèles ont été chargés

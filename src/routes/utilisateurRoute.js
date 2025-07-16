@@ -1,5 +1,62 @@
 import { createUserController, getAllUsersController,getUserByIdController,deleteUserController,updateUserController,authenticateUserController,searchUserController } from "../controllers/utilisateurController.js";
 import express from "express";
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Utilisateur:
+ *       type: object
+ *       properties:
+ *         id_utilisateur:
+ *           type: string
+ *           format: uuid
+ *           example: 12345678-1234-1234-1234-123456789012
+ *         noms:
+ *           type: string
+ *           example: John Doe
+ *         prenoms:
+ *           type: string
+ *           example: John
+ *         fonction:
+ *           type: string
+ *           example: developpeur
+ *         direction:
+ *           type: string
+ *           example: developpement
+ *         adresse_email:
+ *           type: string
+ *           format: email
+ *           example: John.Doe@example.com
+ *         password:
+ *           type: string
+ *           format: password
+ *           example: motDePasse123
+ *         password_confirmation:
+ *           type: string
+ *           format: password
+ *           example: motDePasse123
+ *         id_role:
+ *           type: string
+ *           format: uuid
+ *           example: 12345678-1234-1234-1234-123456789012
+ *         id_structure:
+ *           type: string
+ *           format: uuid
+ *           example: 12345678-1234-1234-1234-123456789012
+ *         is_actif:
+ *           type: boolean
+ *           example: true
+ *         justificatif:
+ *           type: string
+ *           example: justificatif.pdf
+ *       required:
+ *         - noms
+ *         - adresse_email
+ *         - password
+ *         - password_confirmation
+ */
+
 /**
  * @swagger 
  * 
@@ -70,10 +127,10 @@ import express from "express";
  *                 type: string
  *                 description: ID de la structure de l'utilisateur (UUID)
  *                 example: "123e4567-e89b-12d3-a456-426655440000"
- *               id_expediteur:
- *                 type: string
- *                 description: ID de l'expéditeur de l'utilisateur (UUID)
- *                 example: "123e4567-e89b-12d3-a456-426655440000"
+ *               is_actif:
+ *                 type: boolean
+ *                 description: Indique si l'utilisateur est actif
+ *                 example: true
  *     responses:
  *       201:
  *         description: Utilisateur crée avec succès
@@ -190,11 +247,10 @@ import express from "express";
  *                 format: uuid
  *                 description: ID de la structure de l'utilisateur
  *                 example: "23e4567-e89b-12d3-a456-426614174002"
- *               id_expediteur:
- *                 type: string
- *                 format: uuid
- *                 description: ID de l'expéditeur lié à l'utilisateur
- *                 example: "34e4567-e89b-12d3-a456-426614174001"
+ *               is_actif:
+ *                 type: boolean
+ *                 description: Indique si l'utilisateur est actif
+ *                 example: true
  *               adresse_email:
  *                 type: string
  *                 format: string
@@ -303,20 +359,14 @@ const router = express.Router();
 router.route('/api/utilisateurs')
     .post(createUserController)
     .get(getAllUsersController);
-// Route pour rechercher un 
-//                 example:  par noms, email, id, fonction, direction, prenoms
 router.route('/api/utilisateurs/search')
     .get(searchUserController);
-// Route pour obtenir un 
-//                 example:  par ID ou adresse_email
 router.route('/api/utilisateurs/:id')
     .get(getUserByIdController)
     .delete(deleteUserController)
     .put(updateUserController); 
-// Route pour authentifier un 
-// Route pour authentifier un utilisateur
 router.route('/api/utilisateurs/authenticate')  
     .post(authenticateUserController); 
 // Exporter le routeur
-const utilisateurRoute = router;
-export default utilisateurRoute;
+const utilisateurRoutes = router;
+export default utilisateurRoutes;

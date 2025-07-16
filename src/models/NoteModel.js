@@ -1,6 +1,5 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../config/db.js';
-
+export default (sequelize, DataTypes) => {
+  
 const Note = sequelize.define('Note', {
   id_note: {
     type: DataTypes.UUID,
@@ -17,5 +16,11 @@ const Note = sequelize.define('Note', {
   timestamps: true,
   underscored: true
 });
+Note.associate = (models) => {
+  Note.belongsTo(models.Courrier);
+  Note.belongsToMany(models.Structure, { through: models.Transiter});
+};
 
-export default Note;
+return Note;
+
+};

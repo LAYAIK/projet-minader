@@ -8,12 +8,12 @@ export const getAllCouriers = async (req, res) => {
     try {
         const couriers = await Courrier.findAll();
         if (!couriers || couriers.length === 0) {
-            return res.id_status(404).json({ message: 'Aucun courrier trouvé' });
+            return res.status(404).json({ message: 'Aucun courrier trouvé' });
         }
-        res.id_status(200).json(couriers);
+        res.status(200).json(couriers);
     } catch (error) {
         console.error(error);
-        res.id_status(500).json({ message: 'Erreur lors de la récupération des courriers' });
+        res.status(500).json({ message: 'Erreur lors de la récupération des courriers' });
     }
 }
 
@@ -22,7 +22,7 @@ export const getCourierById = async (req, res) => {
         const  id  = req.params.id;
     try { 
         if (!id) {
-            return res.id_status(400).json({ message: 'L\'ID du courrier est requis' });
+            return res.status(400).json({ message: 'L\'ID du courrier est requis' });
         }
         let filtre = {};
         if(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) { // verifier si l'id est un nombre
@@ -37,12 +37,12 @@ export const getCourierById = async (req, res) => {
         }   
         const courier = await Courrier.findOne({ where: filtre });
         if (!courier) {
-            return res.id_status(404).json({ message: 'Courrier non trouvé' });
+            return res.status(404).json({ message: 'Courrier non trouvé' });
         }
-        res.id_status(200).json(courier);
+        res.status(200).json(courier);
     } catch (error) {
         console.error(error);
-        res.id_status(500).json({ message: 'Erreur lors de la récupération du courrier' });
+        res.status(500).json({ message: 'Erreur lors de la récupération du courrier' });
     }
 }
 
@@ -52,11 +52,11 @@ export const createCourier = async (req, res) => {
         const { id_objet, date_envoi,date_reception,date_archivage,date_traitement,id_archive,
             est_archive, numero_courrier,id_structure,id_priorite,documents_associes, contenu , type_courrier, id_status } = req.body;
         if (!id_objet || !numero_courrier || !contenu) {
-            return res.id_status(400).json({ message: 'Tous les champs sont requis' });
+            return res.status(400).json({ message: 'Tous les champs sont requis' });
         }   
         const existingCourier = await Courrier.findOne({ where: { numero_courrier } }); 
         if (existingCourier) {
-            return res.id_status(400).json({ message: 'Un courrier avec ce numéro de courrier existe deja' });
+            return res.status(400).json({ message: 'Un courrier avec ce numéro de courrier existe deja' });
         }
         const newCourier = await Courrier.create({ id_objet,est_archive ,numero_courrier, id_status,id_structure,id_priorite,contenu });
 
@@ -88,10 +88,10 @@ export const createCourier = async (req, res) => {
             newCourier.id_archive = id_archive;
             await newCourier.save();
         }
-        res.id_status(201).json({message: 'Courrier créé avec succès', newCourier});
+        res.status(201).json({message: 'Courrier créé avec succès', newCourier});
     } catch (error) {
         console.error(error);
-        res.id_status(500).json({ message: 'Erreur lors de la création du courrier' });
+        res.status(500).json({ message: 'Erreur lors de la création du courrier' });
     }
 }
 
@@ -99,7 +99,7 @@ export const updateCourier = async (req, res) => {
     try {
         const { id } = req.params;
         if (!id) {
-            return res.id_status(400).json({ message: 'L\'ID du courrier est requis' });
+            return res.status(400).json({ message: 'L\'ID du courrier est requis' });
         }
         const { id_objet, date_envoi,date_reception,date_archivage,date_traitement,
             est_archive, id_destinataires, id_status,
@@ -118,7 +118,7 @@ export const updateCourier = async (req, res) => {
         }   
         const courier = await Courrier.findOne({ where: filtre });
         if (!courier) {
-            return res.id_status(404).json({ message: 'Courrier non rencontré' });
+            return res.status(404).json({ message: 'Courrier non rencontré' });
         }
         if (documents_associes) courier.documents_associes = documents_associes;
         if (date_archivage) courier.date_archivage = date_archivage;
@@ -135,10 +135,10 @@ export const updateCourier = async (req, res) => {
         if (id_objet) courier.id_objet = id_objet;
         if (contenu) courier.contenu = contenu;
         await courier.save();
-        res.id_status(200).json({ message: 'Courrier mis à jour avec succès', courier });
+        res.status(200).json({ message: 'Courrier mis à jour avec succès', courier });
     } catch (error) {
         console.error(error);
-        res.id_status(500).json({ message: 'Erreur lors de la mise à jour du courrier' });
+        res.status(500).json({ message: 'Erreur lors de la mise à jour du courrier' });
     }
 }
 
@@ -146,7 +146,7 @@ export const deleteCourier = async (req, res) => {
     try {
         const { id } = req.params;
         if (!id) {
-            return res.id_status(400).json({ message: 'L\'ID du courrier est requis' });
+            return res.status(400).json({ message: 'L\'ID du courrier est requis' });
         }
         let filtre = {};
         if(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) { // verifier si l'id est un nombre
@@ -161,13 +161,13 @@ export const deleteCourier = async (req, res) => {
         }
         const courier = await Courrier.findOne({ where: filtre });
         if (!courier) {
-            return res.id_status(404).json({ message: 'Courrier non trouvé' });
+            return res.status(404).json({ message: 'Courrier non trouvé' });
         }
         await courier.destroy();
-        res.id_status(200).json({ message: 'Courrier supprimé avec succès' });
+        res.status(200).json({ message: 'Courrier supprimé avec succès' });
     } catch (error) {
         console.error(error);
-        res.id_status(500).json({ message: 'Erreur lors de la suppression du courrier' });
+        res.status(500).json({ message: 'Erreur lors de la suppression du courrier' });
     }
 }
 
@@ -176,13 +176,13 @@ export const searchCouriers = async (req, res) => {
         const { query } = req.query;
 
         if (!query) {
-            return res.id_status(400).json({ message: 'Le paramètre de recherche (query) est requis.' });
+            return res.status(400).json({ message: 'Le paramètre de recherche (query) est requis.' });
         }
         const whereConditions = {
             [Op.or]: [
-                { objet: { [Op.iLike]: `%${query}%` } },
+                //{ objet: { [Op.iLike]: `%${query}%` } },
                 { numero_courrier: { [Op.iLike]: `%${query}%` } },
-                { id_archive: { [Op.iLike]: `%${query}%` } },
+                //{ id_archive: { [Op.iLike]: `%${query}%` } },
                 { contenu: { [Op.iLike]: `%${query}%` } }
             ]
         };
@@ -203,9 +203,9 @@ export const searchCouriers = async (req, res) => {
         const couriers = await Courrier.findAll({
             where: whereConditions
         });
-        res.id_status(200).json(couriers);
+        res.status(200).json(couriers);
     } catch (error) {
         console.error('Erreur lors de la recherche des courriers:', error);
-        res.id_status(500).json({ message: 'Erreur lors de la recherche des courriers' });
+        res.status(500).json({ message: 'Erreur lors de la recherche des courriers' });
     }
 }

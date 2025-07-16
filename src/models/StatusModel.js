@@ -23,7 +23,9 @@ const Status = sequelize.define('Status', {
 });
 // associer le modèle à la base de données
 Status.associate = (models) => {
-    Status.hasMany(models.Courrier, { foreignKey: 'id_status' });
+    Status.hasMany(models.Courrier
+       // , { foreignKey: 'id_status' }
+    );
     Status.belongsToMany(models.Courrier, { through : models.Transiter, foreignKey: 'id_status', otherKey: 'id_courrier' });
   };
 

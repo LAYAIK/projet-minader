@@ -65,7 +65,7 @@ import express from "express";
  *         nature: "Entrant"
  *         type_courrier: "Entrant"
  *         est_archive: false
- *         documents_associes: ["123e4567-e89b-12d3-a456-426614174002"]
+ *         documents_associes: "123e4567-e89b-12d3-a456-426614174002"
  *         id_structure: "123e4567-e89b-12d3-a456-426614174005"
  *         contenu: "Bonjour, je suis un courrier."
  *         priorite: "Normale"

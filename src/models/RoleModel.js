@@ -14,10 +14,6 @@ const Role = sequelize.define('Role', {
     description: {
         type: DataTypes.TEXT,
         allowNull: true
-    },
-    Permissions: {
-        type: DataTypes.ARRAY(DataTypes.STRING), // Permet de stocker un tableau de permissions
-        allowNull: true
     }
 }, {
     tableName: 'Roles',
@@ -25,8 +21,11 @@ const Role = sequelize.define('Role', {
     underscored: true
 });
 Role.associate = (models) => {
-    Role.hasMany(models.Utilisateur, { foreignKey: 'id_role' });
+    Role.belongsToMany(models.Utilisateur, { through: models.UtilisateurRole, foreignKey: 'id_role', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+    Role.belongsToMany(models.Permission, { through: models.RolePermission, foreignKey: 'id_role', ortherkey: 'id_permission', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
     Role.belongsToMany(models.Courrier, { through: models.Transiter, foreignKey: 'id_role', otherKey: 'id_courrier' });
+    Role.hasMany(models.Utilisateur, { foreignKey: 'id_role', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
+
 };
 
 return Role;

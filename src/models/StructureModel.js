@@ -32,6 +32,7 @@ Structure.associate = (models) => {
   Structure.belongsToMany(models.Courrier, { through: models.Transiter,   foreignKey: 'id_structure_expediteur', targetKey: 'id_structure',  otherKey: 'id_courrier',  });
   Structure.belongsToMany(models.Courrier, { through: models.Transiter,   foreignKey: 'id_structure_destinataire', targetKey: 'id_structure',  otherKey: 'id_courrier',  });
   Structure.belongsToMany(models.Document, { through: models.Transiter,   foreignKey: 'id_structure_destinataire',   otherKey: 'id_document',  });
+  Structure.belongsToMany(models.Note, { through: models.Transiter });
   Structure.hasMany(models.Personnel, {foreignKey: 'id_structure' });
 };
 

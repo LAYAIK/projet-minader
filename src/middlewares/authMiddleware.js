@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
-import Utilisateur from '../models/UtilisateurModel.js';
-import Role from '../models/RoleModel.js';
 import { JWT_SECRET } from '../config/jwtConfig.js'; // Assurez-vous que le secret JWT est importé correctement
+import db from '../models/index.js';
+
+const { Utilisateur, Role } = db;
 
 // Middleware pour protéger les routes (vérifier le token)
  const authenticateToken = async (req, res, next) => {

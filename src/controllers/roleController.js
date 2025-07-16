@@ -1,14 +1,15 @@
-import Role from "../models/RoleModel.js";
-
-
-
+import db from '../models/index.js';
+const { Role } = db;
 export const createRole = async(req, res) => {
     try{
       const { nom, description } = req.body;
-      if (!nom || !description) {
-          return res.status(400).json({ message: 'Nom et description sont requis' });
+      if (!nom) {
+          return res.status(400).json({ message: 'Nom  requis' });
       }
       const role = await Role.create({ nom, description });
+      if(description) role.description = description;
+      await role.save();
+
       res.status(201).json({ message: 'Rôle créé avec succès', role });
     } catch (error) {
         console.error(error);
@@ -52,8 +53,8 @@ export const updateRole = async(req, res) => {
         if (!role) {
             return res.status(404).json({ message: 'Rôle non trouvé' });
         }
-        role.nom = nom || role.nom;
-        role.description = description || role.description;
+        if (nom) role.nom = nom;
+        if (description) role.description = description;
         await role.save();
         res.status(200).json({ message: 'Rôle mis à jour avec succès', role });
     } catch (error) {

@@ -45,7 +45,7 @@ export default (sequelize, DataTypes) => {
 
   // les associations
   Courrier.associate = (models) => {
-    Courrier.belongsTo(models.Status, { foreignKey: 'id_status', targetKey: 'id_status', onUpdate: 'SET NULL', onDelete: 'CASCADE' });
+    Courrier.belongsTo(models.Status);
     Courrier.belongsTo(models.Priorite , { foreignKey: 'id_priorite', targetKey: 'id_priorite', onUpdate: 'SET NULL', onDelete: 'CASCADE' });
     Courrier.belongsTo(models.Objet, { foreignKey: 'id_objet', targetKey: 'id_objet', onUpdate: 'SET NULL', onDelete: 'CASCADE' });
     Courrier.belongsTo(models.TypeCourrier, { foreignKey: 'id_type_courrier', targetKey: 'id_type_courrier', onUpdate: 'SET NULL', onDelete: 'CASCADE' });
@@ -60,7 +60,8 @@ export default (sequelize, DataTypes) => {
     Courrier.belongsTo(models.Status, { through: models.Transiter,   foreignKey: 'id_courrier',   otherKey: 'id_status',  });
     Courrier.belongsTo(models.Priorite, { through: models.Transiter,   foreignKey: 'id_courrier',   otherKey: 'id_priorite',  });
     Courrier.belongsTo(models.Objet, { through: models.Transiter,   foreignKey: 'id_courrier',   otherKey: 'id_objet',  });
-    Courrier.hasOne(models.Archive, { foreignKey: 'id_courrier' });
+    Courrier.hasOne(models.Archive, { foreignKey: 'id_courrier' , onUpdate: 'SET NULL', onDelete: '' });
+    Courrier.hasMany(models.Note, { foreignKey: 'id_courrier' });
     
     //Courrier.belongsToMany(models.Utilisateur, { through: models.Transiter,   foreignKey: 'id_courrier',   otherKey: 'id_utilisateur',  });
   };
