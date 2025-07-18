@@ -6,7 +6,7 @@ export const createRole = async(req, res) => {
       if (!nom) {
           return res.status(400).json({ message: 'Nom  requis' });
       }
-      const role = await Role.create({ nom, description });
+      const role = await Role.create({ nom });
       if(description) role.description = description;
       await role.save();
 
@@ -23,7 +23,6 @@ export const getAllRoles = async(req, res) => {
         if (roles.length === 0) {
             return res.status(404).json({ message: 'Aucun rôle trouvé' });
         }
-         // Exclure le mot de passe de la réponse
         res.status(200).json(roles);
     } catch (error) {
         console.error(error);

@@ -13,6 +13,18 @@ const Document = sequelize.define('Document', {
   description: {
     type: DataTypes.TEXT,
     allowNull: true
+  },
+  chemin_serveur: {
+    type: DataTypes.STRING(100),
+    allowNull: true
+  },
+  type_mime: {
+    type: DataTypes.STRING(100),
+    allowNull: true
+  },
+  taille: {
+    type: DataTypes.INTEGER,
+    allowNull: true
   }
 }, {
   tableName: 'Documents',
@@ -23,7 +35,7 @@ const Document = sequelize.define('Document', {
 Document.associate = (models) => {
   Document.belongsTo(models.TypeDocument, { foreignKey: 'id_type_document', targetKey: 'id_type_document', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
   Document.belongsTo(models.Courrier, { foreignKey: 'id_courrier', targetKey: 'id_courrier', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
-  Document.belongsToMany(models.Structure, { through: models.Transiter,   foreignKey: 'id_document',   otherKey: 'id_structure',  });
+  Document.belongsToMany(models.Structure, { through: models.Transiter,   foreignKey: 'id_document',   otherKey: 'id_structure_destinataire',  });
   Document.belongsTo(models.Archive, { foreignKey: 'id_archive', targetKey: 'id_archive', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
 }
 

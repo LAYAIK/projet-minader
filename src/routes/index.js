@@ -11,13 +11,19 @@ import TypeCourrierRoutes from "./typeCourrierRoute.js";
 import archiveRoutes from "./archiveRoute.js";
 import utilisateurRoutes from "./utilisateurRoute.js";
 import statusRoutes from "./statusRoute.js";
+import utilisateurRoleRoutes from "./utilisateurRoleRoute.js";
+import rolePermissionRoutes from "./rolePermissionRoute.js";
+import CourrierUtilisateurRoutes from "./courrierUtilisateurRoute.js";
+import transiterRoutes from "./transiterRoute.js";
+import noteRoutes from "./noteRoute.js";
+
 // import rapportRoutes from "./rapportRoute.js";
-// import personnelRoutes from "./personnelRoute.js";
+import personnelRoutes from "./personnelRoute.js";
 // import messagerieRoutes from "./messagerieRoute.js"; // Import des routes de messagerie
+import uploadRoutes from "./uploadRoute.js";
 
 
-
-const AuthApiRoutes = (app) => {
+const ApiRoutes = (app) => {
     // app.use(AuthApiRoute); // Route pour l'authentification
     app.use(roleRoutes);
     app.use(courierRoutes); // Route pour les courriers
@@ -31,8 +37,15 @@ const AuthApiRoutes = (app) => {
     app.use(archiveRoutes); // Route pour les archives
     app.use(utilisateurRoutes); // Route pour les utilisateurs
     app.use(statusRoutes);
+    app.use(utilisateurRoleRoutes);
+    app.use(rolePermissionRoutes);
+    app.use(CourrierUtilisateurRoutes);
+    app.use(transiterRoutes);
+    app.use(noteRoutes);
     // app.use(rapportRoutes); // Route pour les rapports
-    // app.use(personnelRoutes); // Route pour le personnel
+    app.use(personnelRoutes); // Route pour le personnel
     // app.use('/api/messagerie',messagerieRoutes); // Route pour la messagerie
+
+    app.use(uploadRoutes);
 };
-export default AuthApiRoutes
+export default ApiRoutes

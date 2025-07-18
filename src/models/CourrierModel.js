@@ -52,7 +52,7 @@ export default (sequelize, DataTypes) => {
     Courrier.hasMany(models.Document, { foreignKey: 'id_courrier',targetKey: 'id_courrier', onUpdate: 'SET NULL', onDelete: 'CASCADE' });
     Courrier.belongsTo(models.Structure, { foreignKey: 'id_structure', targetKey: 'id_structure', onUpdate: 'SET NULL', onDelete: 'CASCADE' });
     Courrier.belongsTo(models.Utilisateur, {foreignKey: 'id_utilisateur',  targetKey: 'id_utilisateur',   onDelete: 'SET NULL', onUpdate: 'CASCADE' });
-    Courrier.belongsToMany(models.Utilisateur, { through: models.CourrierUtilisateur,   foreignKey: 'id_courrier',   otherKey: 'id_expediteur',  });
+    Courrier.belongsToMany(models.Utilisateur, { through: models.CourrierUtilisateur,   foreignKey: 'id_courrier',   otherKey: 'id_utilisateur',  });
     Courrier.belongsToMany(models.Utilisateur, { through: models.CourrierUtilisateur,   foreignKey: 'id_courrier',   otherKey: 'id_destinataire', });
     Courrier.belongsToMany(models.Structure, { through: models.Transiter,   foreignKey: 'id_courrier',   otherKey: 'id_structure_expediteur',  });
     Courrier.belongsToMany(models.Structure, { through: models.Transiter,   foreignKey: 'id_courrier',   otherKey: 'id_structure_destinataire',  });

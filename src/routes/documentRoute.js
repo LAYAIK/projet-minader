@@ -4,6 +4,8 @@
  *   post:
  *     summary: Crée un document
  *     tags: [Documents]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -49,6 +51,8 @@
  *   get:
  *     summary: Récupère la liste des documents
  *     tags: [Documents]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: Liste des documents
@@ -68,6 +72,8 @@
  *   get:
  *     summary: Récupère un document par son ID
  *     tags: [Documents]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -95,6 +101,8 @@
  *   put:
  *     summary: Met à jour un document
  *     tags: [Documents]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -150,6 +158,8 @@
  *   delete:
  *     summary: Supprime un document
  *     tags: [Documents]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -208,6 +218,8 @@
  *   get:
  *     summary: Rechercher des documents par mot-clé
  *     tags: [Documents]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: query
@@ -240,38 +252,42 @@ import {
     searchDocumentsController
 
 } from '../controllers/documentController.js';
-//import { authenticateToken, authorize } from '../middlewares/authMiddleware.js';
-//import { authorizeWithScopes } from '../middlewares/authorizeWithScopes.js';
-
-// const router = express.Router();
-
-// router.route('/api/documents')
-//     .get(authenticateToken, authorize, authorizeWithScopes('document.lire'), getAllDocumentsController)
-//     .post(authenticateToken, authorizeWithScopes('document.creer'), createDocumentController);
-
-// router.route('/api/documents/:id')
-//     .get(authenticateToken, authorizeWithScopes('document.lire'), getDocumentByIdController)
-//     .put(authenticateToken, authorizeWithScopes('document.modifier'), updateDocumentController)
-//     .delete(authenticateToken, authorizeWithScopes('document.supprimer'), deleteDocumentController);
-
-// router.route('/api/documents/search')
-//     .get(authenticateToken, authorizeWithScopes('document.lire'), searchDocumentsController);
-
+import { authenticateToken} from '../middlewares/authMiddleware.js';
+import authorizeWithScopes from '../middlewares/authorizationWithScopes.js';
+import modifierDocumentMiddleware from '../middlewares/modifierDocumentMiddleware.js';
+import supprimerDocumentMiddleware from '../middlewares/supprimerDocumentMiddleware.js';
 
 const router = express.Router();
 
 router.route('/api/documents')
-    .get( getAllDocumentsController)
-    .post(createDocumentController);
-
-router.route('/api/documents/search')
-    .get( searchDocumentsController);
-
+    .get(authenticateToken, authorizeWithScopes('document.lire'), getAllDocumentsController)
+    .post(authenticateToken, authorizeWithScopes('document.creer'), createDocumentController);
 
 router.route('/api/documents/:id')
-    .get(getDocumentByIdController)
-    .put(updateDocumentController)
-    .delete(deleteDocumentController);
+    .get(authenticateToken, authorizeWithScopes('document.lire'), getDocumentByIdController)
+    // L'utilisateur veut modifier un document. Le scope dépend du statut du document avec le middleware 'modifierDocumentMiddleware'.
+    .put(authenticateToken, modifierDocumentMiddleware, updateDocumentController)
+    // L'utilisateur veut supprimer un document. Le scope depend du statut et archivé du document avec le middleware 'supprimerDocumentMiddleware'.
+    .delete(authenticateToken, supprimerDocumentMiddleware, deleteDocumentController);
+
+router.route('/api/documents/search')
+    .get(authenticateToken, authorizeWithScopes('document.lire'), searchDocumentsController);
+
+
+// const router = express.Router();
+
+// router.route('/api/documents')
+//     .get( getAllDocumentsController)
+//     .post(createDocumentController);
+
+// router.route('/api/documents/search')
+//     .get( searchDocumentsController);
+
+
+// router.route('/api/documents/:id')
+//     .get(getDocumentByIdController)
+//     .put(updateDocumentController)
+//     .delete(deleteDocumentController);
 
 
 

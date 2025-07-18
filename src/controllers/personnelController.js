@@ -42,7 +42,7 @@ export const getPersonnelById = async (req, res) => {
 }
 
 export const createPersonnel = async (req, res) => {
-    const { noms,prenoms,adresse_email,telephone,matricule,date_embauche,date_naissance } = req.body;
+    const { noms,prenoms,adresse_email,telephone,matricule,date_embauche,date_naissance,id_structure,id_type_personnel, adresse } = req.body;
     try {
         if (!noms || !matricule || !date_embauche || !adresse_email || !telephone) {
             return res.status(400).json({ message: "Noms, matricule, date_embauche, adresse_email et telephone sont requis" });
@@ -53,10 +53,13 @@ export const createPersonnel = async (req, res) => {
             return res.status(400).json({ message: "Un personnel avec ce matricule ou cette adresse email existe déjà" });
         }
 
-        const newPersonnel = await Personnel.create({ noms,adresse_email,matricule,date_embauche, });
+        const newPersonnel = await Personnel.create({ noms, adresse_email, matricule, date_embauche, });
         if (prenoms) newPersonnel.prenoms = prenoms;
         if (telephone) newPersonnel.telephone = telephone;
         if (date_naissance) newPersonnel.date_naissance = date_naissance;
+        if (id_structure) newPersonnel.id_structure = id_structure;
+        if (id_type_personnel) newPersonnel.id_type_personnel = id_type_personnel;
+        if (adresse) newPersonnel.adresse = adresse;
         await newPersonnel.save();
 
         res.status(201).json({ message: "Personnel créé avec succès", personnel: newPersonnel});
@@ -69,7 +72,7 @@ export const createPersonnel = async (req, res) => {
 
 export const updatePersonnel = async (req, res) => {
     const { id } = req.params;
-    const { noms,prenoms,adresse_email,telephone,date_embauche,date_naissance } = req.body;
+     const { noms,prenoms,adresse_email,telephone,date_embauche,date_naissance,id_structure,id_type_personnel, adresse } = req.body;
     try {
         let filtre ={};
         if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)) { // verifier si l'id est un nombre
@@ -95,6 +98,9 @@ export const updatePersonnel = async (req, res) => {
         if (telephone) personnel.telephone = telephone;
         if (date_embauche) personnel.date_embauche = date_embauche;
         if (date_naissance) personnel.date_naissance = date_naissance;
+        if (id_structure) personnel.id_structure = id_structure;
+        if (id_type_personnel) personnel.id_type_personnel = id_type_personnel;
+        if (adresse) personnel.adresse = adresse;
         await personnel.save();
         res.status(200).json({ message: "Personnel mis à jour avec succès", personnel: personnel});
 

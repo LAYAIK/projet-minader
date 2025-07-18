@@ -52,11 +52,10 @@ const Utilisateur = sequelize.define('Utilisateur', {
 Utilisateur.associate = (models) => {
   Utilisateur.belongsTo(models.Structure, { foreignKey: 'id_structure', targetKey: 'id_structure', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
   Utilisateur.hasMany(models.Courrier, { foreignKey: 'id_utilisateur',   onDelete: 'SET NULL',   onUpdate: 'CASCADE'  });
-  Utilisateur.belongsToMany(models.Courrier, { through: models.CourrierUtilisateur,  foreignKey: 'id_expediteur', targetKey: 'id_utilisateur',  otherKey: 'id_courrier' });
+  Utilisateur.belongsToMany(models.Courrier, { through: models.CourrierUtilisateur,  foreignKey: 'id_utilisateur', targetKey: 'id_utilisateur',  otherKey: 'id_courrier' });
   Utilisateur.belongsToMany(models.Courrier, { through: models.CourrierUtilisateur,  foreignKey: 'id_destinataire', targetKey: 'id_utilisateur',  otherKey: 'id_courrier' });
   //Utilisateur.belongsToMany(models.Courrier, { through: models.Transiter, foreignKey: 'id_utilisateur', otherKey: 'id_courrier' });
   Utilisateur.belongsToMany(models.Role, { through: models.UtilisateurRole, foreignKey: 'id_utilisateur', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
-  Utilisateur.hasOne(models.Role, { foreignKey: 'id_role', onUpdate: 'CASCADE', onDelete: 'CASCADE' });
   Utilisateur.hasMany(models.Archive, { foreignKey: 'id_utilisateur',   onDelete: 'SET NULL',   onUpdate: 'CASCADE'  });
 };
 return Utilisateur;
