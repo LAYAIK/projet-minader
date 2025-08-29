@@ -48,43 +48,13 @@ db.sequelize = sequelize; // La connexion est déjà importé
 // Assurez-vous que les noms des fichiers correspondent et que vous les ajoutez à l'objet db
 import Status from './StatusModel.js';
 import Priorite from './PrioriteModel.js';
-import Objet from './objetModel.js';
-import TypeCourrier from './TypeCourrierModel.js';
-import TypeDocument from './TypeDocumentModel.js';
-import Archive from './ArchiveModel.js';
-import CourrierUtilisateur from './CourrierUtilisateurModel.js';
-import TypePersonnel from './TypePersonnelModel.js';
-import Structure from './StructureModel.js';
-import Utilisateur from './UtilisateurModel.js'
-import Personnel from './PersonnelModel.js';
-import Courrier from './CourrierModel.js';
-import Document from './DocumentModel.js';
-import Role from './RoleModel.js';
-import Transiter from './TransiterModel.js';
-import Permission from './PermissionModel.js';
-import RolePermission from './RolePermissionModel.js';
-import UtilisateurRole from './UtilisateurRoleModel.js';
+import Objet from './ObjetModel.js';
 import Note from './NoteModel.js';
 
 db.Status = Status(sequelize, DataTypes);
 db.Priorite = Priorite(sequelize, DataTypes);
 db.Objet = Objet(sequelize, DataTypes);
-db.Role = Role(sequelize, DataTypes);
-db.TypeCourrier = TypeCourrier(sequelize, DataTypes);
 db.Note = Note(sequelize, DataTypes);
-db.TypePersonnel = TypePersonnel(sequelize, DataTypes);
-db.Structure = Structure(sequelize, DataTypes);
-db.Utilisateur = Utilisateur(sequelize, DataTypes);
-db.Personnel = Personnel(sequelize, DataTypes);
-db.Archive = Archive(sequelize, DataTypes);
-db.Courrier = Courrier(sequelize, DataTypes);
-db.Document = Document(sequelize, DataTypes);
-db.CourrierUtilisateur = CourrierUtilisateur(sequelize, DataTypes);
-db.TypeDocument = TypeDocument(sequelize, DataTypes);
-db.Transiter = Transiter(sequelize, DataTypes);
-db.Permission = Permission(sequelize, DataTypes);
-db.RolePermission = RolePermission(sequelize, DataTypes);
-db.UtilisateurRole = UtilisateurRole(sequelize, DataTypes);
 
 
 // Définissez les associations après que tous les modèles ont été chargés

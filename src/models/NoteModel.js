@@ -17,8 +17,6 @@ const Note = sequelize.define('Note', {
   underscored: true
 });
 Note.associate = (models) => {
-  Note.belongsTo(models.Courrier, { foreignKey: 'id_courrier' });
-  Note.belongsToMany(models.Structure, { through: models.Transiter,  foreignKey: 'id_note',   otherKey: 'id_structure_destinataire',  });
 };
 
 return Note;

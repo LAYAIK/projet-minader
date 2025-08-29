@@ -4,7 +4,7 @@ import express from 'express';
 import 'dotenv/config'; // Charge les variables d'environnement depuis le fichier .env
 
 const app = express();
-const PORT = process.env.PORT || 3000;  
+const PORT = process.env.PORT || 3005;  
 
 
 const options = {

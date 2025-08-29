@@ -2,7 +2,7 @@ import app from './app.js';
 import dotenv from 'dotenv'; // Si vous utilisez dotenv pour charger les variables d'environnement
 import db from './src/models/index.js'; // Importe l'objet 'db' depuis votre fichier models/index.js (avec l'extension .js)
 dotenv.config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3005;
 
 async function runApplication() {
     try {
@@ -16,23 +16,7 @@ async function runApplication() {
         await db.Status.sync({ alter: true });
         await db.Priorite.sync({ alter: true });
         await db.Objet.sync({ alter: true }); // Assurez-vous que ce nom de modèle est 'Objet' et non 'Objets' dans votre objet db
-        await db.Role.sync({ alter: true });
-        await db.TypeDocument.sync({ alter: true });
-        await db.TypeCourrier.sync({ alter: true });
-        await db.Document.sync({ alter: true });
-        await db.TypePersonnel.sync({ alter: true });
         await db.Note.sync({ alter: true });
-        await db.Structure.sync({ alter: true });
-        await db.Utilisateur.sync({ alter: true });
-        await db.UtilisateurRole.sync({ alter: true });
-        await db.Permission.sync({ alter: true });
-        await db.RolePermission.sync({ alter: true });
-        await db.Archive.sync({ alter: true });
-        await db.Personnel.sync({ alter: true });
-        await db.Courrier.sync({ alter: true });
-        await db.CourrierUtilisateur.sync({ alter: true });
-       
-        await db.Transiter.sync({ alter: true });
 
         console.log('Tables synchronisées avec succès.');
 

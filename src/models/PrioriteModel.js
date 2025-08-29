@@ -22,8 +22,6 @@ const Priorite = sequelize.define('Priorite', {
 });
 // relations
   Priorite.associate = (models) => {
-    Priorite.hasMany(models.Courrier, { foreignKey: 'id_priorite' });
-    Priorite.belongsToMany(models.Courrier, { through: models.Transiter, foreignKey: 'id_priorite', otherKey: 'id_courrier' });
   };
 
   return Priorite;

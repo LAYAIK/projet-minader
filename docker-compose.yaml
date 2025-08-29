@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  db_service_autres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: La@YaiK3
+      POSTGRES_DB: minader_autres
+    volumes:
+      - db_service_autres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  service_autres:
+    build: .
+    environment:
+      DATABASE_URL: postgres://postgres:La@YaiK3@db_service_autres:5432/minader_autres
+      JWT_SECRET: "RXCT34ZE5GFDSFD756"
+      JWT_EXPIRES_IN: 1d
+    ports:
+      - "3005:3005"
+    depends_on:
+      - db_service_autres
+    volumes:
+      - .:/service_autres
+
+
+volumes:
+  db_service_autres-data:
