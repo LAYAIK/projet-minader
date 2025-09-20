@@ -8,7 +8,7 @@ export const getAllNotesController = async (req, res) => {
         if (notes.length === 0) {
             return res.status(404).json({ message: 'Aucune note trouvée' });
         }
-        res.status(200).json({ notes });
+        res.status(200).json(notes);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Erreur lors de la récupération des notes' });

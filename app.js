@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import pino from 'pino';
 import { pinoHttp } from 'pino-http';
@@ -8,6 +9,15 @@ import ApiRoutes from './src/routes/index.js'; // importation des routes d'authe
 
 const app = express(); // création de l'application express
 app.use(bodyParser.json()); // pour parser le corps des requêtes JSON
+
+// ✅ Configuration CORS COMPLÈTE et EXPLICITE
+app.use(cors({
+  origin: 'http://localhost:5173', // URL EXACT de votre frontend React
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  exposedHeaders: ['Authorization']
+}));
 
 const logger = pino({ 
     level: process.env.LOG_LEVEL || 'info',  // niveau de log, par défaut 'info'

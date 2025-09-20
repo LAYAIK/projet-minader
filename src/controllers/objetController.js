@@ -7,7 +7,10 @@ export const createObjetController = async (req, res) => {
             return res.status(400).json({ message: 'Le libellé est requis' });
         }
         const objet = await Objet.create({ libelle });
-        if(description) Objet.description = description;
+
+        if(description) { 
+            Objet.description = description
+        } 
         await objet.save();
         res.status(201).json({ message: 'Objet créé avec succès', objet });
     } catch (error) {
@@ -23,7 +26,7 @@ export const getAllObjetsController = async (req, res) => {
             return res.status(404).json({ message: 'Aucun objet trouvé' });
         }
             
-        res.json({ message: 'Liste des objets', objets });
+        res.status(200).json(objets);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Erreur lors de la récupération de la liste des objets' });
